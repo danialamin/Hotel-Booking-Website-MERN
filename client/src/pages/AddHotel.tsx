@@ -1,6 +1,5 @@
 import React from 'react'
-import { SubmitHandler, } from 'react-hook-form'
-import HotelForm, { FormFields } from '../components/HotelForm'
+import HotelForm from '../components/HotelForm'
 import { useMutation } from 'react-query'
 import addHotelApiCall from '../api fetch/addHotelApiCall'
 

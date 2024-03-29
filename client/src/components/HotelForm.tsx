@@ -1,6 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
-import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { UseMutationResult } from 'react-query'
@@ -31,7 +29,7 @@ const schema = z.object({
 export type FormFields = z.infer<typeof schema>
 
 const HotelForm = (props: {mutation: UseMutationResult<any, unknown, FormData, unknown>, isLoading: string} ) => {
-  const {register, watch, handleSubmit, setError, formState:{errors, isSubmitting}} = useForm<FormFields>({resolver: zodResolver(schema)})
+  const {register, watch, handleSubmit, formState:{errors}} = useForm<FormFields>({resolver: zodResolver(schema)})
   const currentType = watch("type")
   // console.log(watch('imageFiles'))
 
@@ -49,7 +47,7 @@ const HotelForm = (props: {mutation: UseMutationResult<any, unknown, FormData, u
     formDataJson.facilities.forEach((facility, index) => {
       formData.append(`facilities[${index}]`, facility);
     });
-    Array.from(formDataJson.imageFiles).forEach((imageFile: any) => {
+    Array.from(formDataJson.imageFiles).forEach((imageFile: File) => {
       formData.append(`imageFiles`, imageFile);
     });
 

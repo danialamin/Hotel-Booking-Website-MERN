@@ -7,14 +7,20 @@ dotenv.config()
 import usersRoute from "./routes/usersRoute"
 import hotelsRoute from "./routes/hotelsRoute"
 import bodyParser from "body-parser"
+import { v2 } from "cloudinary"
 
 const app = express()
+
+v2.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
+})
 
 app.use(cookieParser())
 app.use(cors({origin: true, credentials: true}))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-
 
 mongoose.connect(process.env.CONNECTION_STRING as string)
   .then(() => console.log("connected to db"))
