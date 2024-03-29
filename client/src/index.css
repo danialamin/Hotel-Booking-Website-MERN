@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .button {
+    @apply px-1 py-[6px] bg-[#f4b41a] rounded-md font-[500] text-[0.95rem] tracking-tight flex items-center max-sm:text-[0.85rem] max-sm:py-[4px] max-sm:px-[3px]
+  }
+}

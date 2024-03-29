@@ -3,7 +3,7 @@ import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from 'react-query'
 import { Link, useNavigate } from 'react-router-dom'
-import { string, z } from 'zod'
+import { z } from 'zod'
 import signin from '../api fetch/signin'
 
 const schemaSignin = z.object({
@@ -22,12 +22,13 @@ const Signin = () => {
     onSuccess: () => {
       navigate('/')
       queryClient.invalidateQueries(["isLoggedin"], {exact: true})
+
     },
-    onError: (error: Error) => {
+    onError: () => {
       setError('root', {'message': 'Invalid credentials'})
     },
   })
-  console.log(mutation.data)
+
   const onSubmit: SubmitHandler<FormFieldsSignin> = async (formData) => {
     mutation.mutate(formData)
   }
@@ -40,7 +41,7 @@ const Signin = () => {
           {errors.email && <p className='text-red-600 text-[0.96rem] font-[500] my-[-15px]'>{errors.email.message}</p>}
           <input {...register("password")} type="text" className='outline-none rounded-md px-3 py-2' placeholder='Enter password' />
           {errors.password && <p className='text-red-600 text-[0.96rem] font-[500] my-[-10px]'>{errors.password.message}</p>}
-          <button className='bg-[#0e387a] color-white font-[600] py-3 rounded-md text-white disabled:bg-gray-500' disabled={isSubmitting}>Sign in</button> {/* a button inside a form automatically becomes a submit button */}
+          <button className='bg-[#0e387a] color-white font-[600] py-3 rounded-md text-white disabled:bg-gray-500' disabled={mutation.status == 'loading'}>Sign in</button> {/* a button inside a form automatically becomes a submit button */}
           <p className='text-[0.9rem] mt-[-13px]'>Don't have an acount? <Link to={'../signup'} className='underline cursor-pointer text-blue-700'>Sign up</Link></p>
           {errors.root && <p className='text-red-600 text-[0.96rem] font-[600] mx-auto mt-[-5px]'>{errors.root.message}</p>}
         </form>

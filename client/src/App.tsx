@@ -6,6 +6,8 @@ import { useQuery } from "react-query"
 import { useDispatch } from "react-redux"
 import isLoggedin from "./api fetch/isLoggedin"
 import { isLoggedinAction, notLoggedinAction } from "./redux/loggedinSlice"
+import ProtectedRoute from "./layout/ProtectedRoute"
+import AddHotel from "./pages/AddHotel"
 
 function App() {
   const dispatch = useDispatch()
@@ -23,6 +25,9 @@ function App() {
     <Route path='/' element={<Layout />} >
       <Route path="signin" element=<Signin /> />
       <Route path="signup" element=<Signup /> />
+      <Route element={<ProtectedRoute />}>
+        <Route path="addHotel" element={<AddHotel />} />
+      </Route>
     </Route>
   ))
 

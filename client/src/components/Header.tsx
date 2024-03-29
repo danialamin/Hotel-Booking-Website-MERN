@@ -17,21 +17,23 @@ const Header = () => {
   })
   return (
     <div className='bg-[#0e387a] py-6'>
-      <div className='container mx-auto flex justify-between items-center'>
-        <span className='text-3xl text-white font-bold tracking-tight max-sm:text-xl'>
+      <div className='container mx-auto flex justify-between items-center flex-wrap'>
+        <span className='text-3xl text-white font-bold tracking-tight mr-4 mb-2 max-sm:text-[25px]'>
           <Link to="/">MERNHolidays.com</Link>
         </span>
-        <span className='flex space-x-2'>
+
           {
             loggedin ? 
-            <div>
-              <Link to={'/my-bookings'}>My Bookings</Link>
-              <Link to={'/my-hotels'}>My Hotels</Link>
-              <button onClick={() => mutation.mutate()}>Sign out</button>
+            <div className='flex gap-3 max-sm:gap-1'>
+              <Link to={'/my-bookings'} className='button'>My Bookings</Link>
+              <Link to={'/my-hotels'} className='button'>My Hotels</Link>
+              <button onClick={() => mutation.mutate()} className='button'>Sign out</button>
             </div> :
-            <Link to="/signin" className='flex items-center text-blue-600 bg-white px-3 font-bold hover:bg-gray-100 rounded-md py-1 max-sm:text-[0.95rem] max-sm:px-2'>Sign in</Link>
+            <span className='flex space-x-2'>
+              <Link to="/signin" className='flex items-center text-blue-600 bg-white px-3 font-bold hover:bg-gray-100 rounded-md py-1 max-sm:text-[0.95rem] max-sm:px-2'>Sign in</Link>
+            </span>
           }
-        </span>
+        
 
       </div>
     </div>
