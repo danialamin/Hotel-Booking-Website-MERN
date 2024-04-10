@@ -14,8 +14,6 @@ export type HotelType = {
   pricePerNight: number;
   starRating: number;
   imageurls: string[];
-  createdAt: Date;
-  updatedAt: Date
 }
 
 const schema = new Schema<HotelType>({
@@ -31,8 +29,6 @@ const schema = new Schema<HotelType>({
   pricePerNight: {type: Number, required: true},
   starRating: {type: Number, required: true, min: 1, max: 5},
   imageurls: {type: [String], required: true},
-  createdAt: {type: Date, required: true},
-  updatedAt: {type: Date, required: true}
 })
 
 const hotelModel = model<HotelType>('hotel', schema)

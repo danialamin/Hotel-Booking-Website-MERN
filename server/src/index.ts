@@ -19,8 +19,8 @@ v2.config({
 
 app.use(cookieParser())
 app.use(cors({origin: true, credentials: true}))
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: true, limit: '50mb' }))
+app.use(express.json())
 
 mongoose.connect(process.env.CONNECTION_STRING as string)
   .then(() => console.log("connected to db"))

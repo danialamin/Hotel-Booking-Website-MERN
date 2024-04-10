@@ -8,6 +8,7 @@ import isLoggedin from "./api fetch/isLoggedin"
 import { isLoggedinAction, notLoggedinAction } from "./redux/loggedinSlice"
 import ProtectedRoute from "./layout/ProtectedRoute"
 import AddHotel from "./pages/AddHotel"
+import MyHotels from "./pages/MyHotels"
 
 function App() {
   const dispatch = useDispatch()
@@ -27,6 +28,7 @@ function App() {
       <Route path="signup" element=<Signup /> />
       <Route element={<ProtectedRoute />}>
         <Route path="addHotel" element={<AddHotel />} />
+        <Route path="myHotels" element={<MyHotels />} />
       </Route>
     </Route>
   ))

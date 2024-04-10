@@ -11,8 +11,8 @@ const Header = () => {
   const mutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
+      queryClient.invalidateQueries(["isLoggedin"], {exact: true})
       navigate('/signin')
-      queryClient.invalidateQueries(['isLoggedin'], {exact: true})
     }
   })
   return (
@@ -25,8 +25,8 @@ const Header = () => {
           {
             loggedin ? 
             <div className='flex gap-3 max-sm:gap-1'>
-              <Link to={'/my-bookings'} className='button'>My Bookings</Link>
-              <Link to={'/my-hotels'} className='button'>My Hotels</Link>
+              <Link to={'/myBookings'} className='button'>My Bookings</Link>
+              <Link to={'/myHotels'} className='button'>My Hotels</Link>
               <button onClick={() => mutation.mutate()} className='button'>Sign out</button>
             </div> :
             <span className='flex space-x-2'>

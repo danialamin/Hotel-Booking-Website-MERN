@@ -17,13 +17,9 @@ const schema = z.object({
   facilities: z.array(z.string()).nonempty(),
   pricePerNight: z.number(),
   starRating: z.number().min(1).max(5),
-  imageFiles: z
-  .instanceof(FileList)
-  .refine((files) => files?.[0]?.size <= 5000000, `Max image size is 5MB.`)
-  .refine(
-    (files) => ["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(files?.[0]?.type),
-    "Only .jpg, .jpeg, .png and .webp formats are supported."
-  )
+  imageFiles: z.instanceof(FileList)
+  .refine((files) => files?.[0]?.size <= 5000000, 'Max image size is 5MB')
+  .refine(files => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(files?.[0]?.type), 'Not an image')
 })
 
 export type FormFields = z.infer<typeof schema>
@@ -31,7 +27,6 @@ export type FormFields = z.infer<typeof schema>
 const HotelForm = (props: {mutation: UseMutationResult<any, unknown, FormData, unknown>, isLoading: string} ) => {
   const {register, watch, handleSubmit, formState:{errors}} = useForm<FormFields>({resolver: zodResolver(schema)})
   const currentType = watch("type")
-  // console.log(watch('imageFiles'))
 
   const onSubmit: SubmitHandler<FormFields> = (formDataJson) => {
     const formData = new FormData()
@@ -50,7 +45,6 @@ const HotelForm = (props: {mutation: UseMutationResult<any, unknown, FormData, u
     Array.from(formDataJson.imageFiles).forEach((imageFile: File) => {
       formData.append(`imageFiles`, imageFile);
     });
-
     props.mutation.mutate(formData)
   }
 
@@ -147,8 +141,9 @@ const HotelForm = (props: {mutation: UseMutationResult<any, unknown, FormData, u
             {/* {errors.imageFiles && <p className='text-red-600 text-[0.92rem]'>{errors.imageFiles.message}</p>} */}
           </div>
 
-          <button type='submit' className='bg-[#f4b41a] font-[500] text-[1.2rem] py-3 rounded-[16px] mb-6 disabled:bg-yellow-600 disabled:cursor-default' disabled={props.isLoading === 'loading'}>
-            Submit
+          <button type='submit' className='bg-[#f4b41a] font-[500] text-[1.2rem] py-3 rounded-[16px] mb-6 flex justify-center items-center disabled:bg-yellow-600 disabled:cursor-default' disabled={props.isLoading === 'loading'}>
+            {props.isLoading === 'loading' ? <img src='/ZZ5H.gif' width={30} alt='Spinner' />
+              : 'Submit'}
           </button>
         </form>
       </div>

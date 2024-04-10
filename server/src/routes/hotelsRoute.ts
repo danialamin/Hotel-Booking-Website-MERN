@@ -12,24 +12,29 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }
 })
 
-router.post('/create', upload.array("images", 6), async (req: Request, res: Response) => {
-  console.log(req.body)
-  console.log(req.files)
+router.post('/create', verifyToken, upload.array("imageFiles", 6), async (req: Request, res: Response) => {
+
   try {
-  const images = req.files as Express.Multer.File[]
-  const body = req.body
-  const uploadPromises = images.map(async(image) => {
+    const images = req.files as Express.Multer.File[]
+    const body = req.body
+    const uploadPromises = images.map(async(image) => {
     const b64 = Buffer.from(image.buffer).toString("base64")
-    let dataURI = 'data:' + image.mimetype + ';base64,' + b64
-    const res = await v2.uploader.upload(dataURI)
-    return res.url
-  })
-  const imageUrls = await Promise.all(uploadPromises)
-  
-  body.imageFiles = imageUrls
-  const hotel = new hotelModel(body)
-  await hotel.save()
-  res.status(201).json({'message': hotel})
+      let dataURI = 'data:' + image.mimetype + ';base64,' + b64
+      const res = await v2.uploader.upload(dataURI)
+      return res.url
+    })
+    const imageUrls = await Promise.all(uploadPromises)
+    body.imageurls = imageUrls
+    body.pricePerNight = Number(body.pricePerNight)
+    body.starRating = Number(body.starRating)
+    body.adultCount = Number(body.adultCount)
+    body.childCount = Number(body.childCount)
+
+    
+    body.userId = req.user
+    const hotel = new hotelModel(body)
+    await hotel.save()
+    res.status(201).json({'message': hotel})
   } 
   catch(err) {
     res.status(500).json({'message': 'error'})
@@ -37,6 +42,23 @@ router.post('/create', upload.array("images", 6), async (req: Request, res: Resp
   }
 })
 
+router.get('/myHotels', verifyToken, async (req: Request, res: Response) => {
+  try {
+    const hotels = await hotelModel.find({userId: req.user})
+    return res.status(200).json({'message': hotels}) 
+  } catch(err) {
+    return res.status(500).json({'message': 'Server error'})
+  }
+})
 
+router.get('/myHotel/:id', verifyToken, async (req: Request, res: Response) => {
+  try {
+  const id = req.params.id
+  const hotel = await hotelModel.findOne({_id: id, userId: req.user})
+  res.status(200).json({'message': hotel})
+  } catch(err) {
+  res.status(500).json({'message': 'server error'})
+  }
+})
 
 export default router

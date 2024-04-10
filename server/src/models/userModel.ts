@@ -8,7 +8,7 @@ type UserType = {
   lastName: string
 }
 
-const schema = new Schema({
+const schema = new Schema<UserType>({
   email: {type: String, required: true, unique: true},
   password: {type: String, required: true},
   firstName: {type: String, required: true},
