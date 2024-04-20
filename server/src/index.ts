@@ -6,6 +6,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 import usersRoute from "./routes/usersRoute"
 import hotelsRoute from "./routes/hotelsRoute"
+import searchRoute from "./routes/searchRoute"
 import bodyParser from "body-parser"
 import { v2 } from "cloudinary"
 
@@ -27,5 +28,6 @@ mongoose.connect(process.env.CONNECTION_STRING as string)
 
 app.use("/users", usersRoute)
 app.use("/hotels", hotelsRoute)
+app.use("/search", searchRoute)
 
 app.listen(3100, () => console.log('listening to port 3100'))
